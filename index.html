@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard UERJ 2026 — Apresentação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#1a2e44;--teal:#1dc99e;--lime:#84d43c;--grad:linear-gradient(90deg,#1dc99e,#84d43c);--grad135:linear-gradient(135deg,#1dc99e,#84d43c);--t3:#6b8ea6}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Inter',sans-serif;background:#0b1a2b}
+.deck{position:fixed;inset:0}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:56px 72px;opacity:0;transform:translateX(48px);transition:opacity .45s cubic-bezier(.4,0,.2,1),transform .45s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all}
+.slide.out{opacity:0;transform:translateX(-48px)}
+.bg-dark{background:linear-gradient(135deg,#0b1a2b 0%,#1a2e44 55%,#122035 100%)}
+.bg-cover{background:linear-gradient(135deg,#0b1a2b 0%,#1a2e44 60%,#1c3560 100%)}
+.dots{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(29,201,158,.08) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:14px;display:block}
+.eyebrow-plain{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:14px;display:block}
+h1{font-size:54px;font-weight:900;color:#fff;line-height:1.08;margin-bottom:16px}
+h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2{font-size:38px;font-weight:900;color:#fff;margin-bottom:6px}
+h3{font-size:15px;font-weight:800;color:#fff;margin-bottom:6px}
+.sub{font-size:17px;color:rgba(255,255,255,.5);font-weight:500;line-height:1.5}
+.line{height:4px;border-radius:2px;background:var(--grad);margin:14px 0 28px;width:72px}
+.line.center{margin-left:auto;margin-right:auto}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.full{width:100%;max-width:1080px}
+.card{background:rgba(255,255,255,.05);border:1.5px solid rgba(29,201,158,.2);border-radius:18px;padding:22px;color:#fff}
+.card.uerj{border-color:rgba(29,201,158,.4)}
+.card-icon{font-size:30px;display:block;margin-bottom:10px}
+.card p{font-size:13px;color:rgba(255,255,255,.6);line-height:1.65;margin-top:4px}
+.flist{list-style:none}
+.flist li{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px;color:rgba(255,255,255,.75);line-height:1.5}
+.flist li:last-child{border:none}
+.flist li::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:var(--grad135);flex-shrink:0;margin-top:5px}
+.flist li strong{color:#fff}
+.stat{text-align:center}
+.stat-num{font-size:58px;font-weight:900;line-height:1;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.45);margin-top:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(29,201,158,.12);border:1px solid rgba(29,201,158,.3);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--teal);margin:4px}
+.prog{background:rgba(255,255,255,.1);border-radius:999px;height:7px;overflow:hidden;margin-top:8px}
+.prog-fill{height:100%;border-radius:999px;background:var(--grad)}
+.mtable{width:100%;border-collapse:collapse;font-size:13px}
+.mtable th{background:rgba(26,46,68,.8);color:rgba(255,255,255,.6);padding:8px 12px;font-size:10px;text-transform:uppercase;letter-spacing:.8px;text-align:left}
+.mtable td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.8)}
+.mtable tr:first-child td{background:rgba(251,191,36,.07)}
+.highlight{background:var(--grad135);border-radius:18px;padding:22px 32px;text-align:center}
+.highlight h3{font-size:22px;font-weight:900;color:#0b1a2b}
+.highlight p{font-size:14px;color:rgba(0,0,0,.55);margin-top:6px}
+.box{background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:18px}
+.navbar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:200;background:rgba(11,26,43,.75);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1);border-radius:40px;padding:10px 22px}
+.nbtn{background:none;border:none;color:rgba(255,255,255,.55);font-size:18px;cursor:pointer;padding:5px 10px;border-radius:8px;transition:all .18s;font-family:'Inter',sans-serif}
+.nbtn:hover{color:#fff;background:rgba(255,255,255,.1)}
+.counter{font-size:12px;font-weight:700;color:rgba(255,255,255,.4);min-width:44px;text-align:center}
+.dotnav{display:flex;gap:5px;align-items:center}
+.dot{width:6px;height:6px;border-radius:999px;background:rgba(255,255,255,.28);cursor:pointer;transition:all .2s}
+.dot.on{background:var(--teal);width:18px}
+.logo{width:72px;height:72px;border-radius:18px;object-fit:cover;box-shadow:0 8px 32px rgba(0,0,0,.45),0 0 0 2px rgba(29,201,158,.4);margin:0 auto 28px;display:block}
+.slide-num{position:absolute;top:28px;right:36px;font-size:11px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:1px}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- S1 CAPA -->
+<div class="slide bg-cover active">
+  <div class="dots"></div>
+  <div class="slide-num">01 / 11</div>
+  <div style="text-align:center;max-width:820px;position:relative">
+    <img src="logo.jpg" class="logo" alt="Matriz Educação">
+    <span class="eyebrow-plain">Matriz Educação</span>
+    <h1>Dashboard<br><em>UERJ 2026</em></h1>
+    <p class="sub" style="margin-bottom:28px">Acompanhamento de desempenho nos Simulados UERJ<br>Ranking · Dashboard Individual · Plano de Estudos</p>
+    <p style="font-size:11px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:20px">Desenvolvido por Davi Ferrarez</p>
+    <div>
+      <span class="pill">🎓 7 Simulados UERJ</span>
+      <span class="pill">📊 Dashboard Interativo</span>
+      <span class="pill">🖨️ Relatório por Aluno</span>
+      <span class="pill">🏆 Ranking em Tempo Real</span>
+    </div>
+  </div>
+</div>
+
+<!-- S2 O SISTEMA -->
+<div class="slide bg-dark">
+  <div class="slide-num">02 / 11</div>
+  <div class="full">
+    <span class="eyebrow">O Sistema</span>
+    <h2>O que é o Dashboard UERJ?</h2>
+    <div class="line"></div>
+    <div class="g3" style="gap:16px">
+      <div class="card"><span class="card-icon">🎯</span><h3>Objetivo</h3><p>Acompanhar em tempo real o desempenho dos alunos preparatórios para a <strong style="color:#fff">UERJ 2026</strong> nos 7 simulados realizados ao longo do ano.</p></div>
+      <div class="card"><span class="card-icon">👨‍🏫</span><h3>Para quem</h3><p>Professores, coordenadores e <strong style="color:#fff">alunos</strong> da Matriz Educação. Cada aluno acessa seu próprio relatório detalhado e personalizado.</p></div>
+      <div class="card"><span class="card-icon">⚡</span><h3>Velocidade</h3><p>Dados carregados instantaneamente. Rankings, gráficos e planos gerados em menos de 1 segundo, sem necessidade de servidor.</p></div>
+      <div class="card"><span class="card-icon">🖨️</span><h3>Relatórios Individuais</h3><p>Cada aluno recebe relatório completo com notas, gráfico radar, progresso na meta e plano de estudos <strong style="color:#fff">personalizado</strong>.</p></div>
+      <div class="card"><span class="card-icon">🎨</span><h3>Design</h3><p>Interface profissional responsiva com tipografia moderna, gradientes e gráficos interativos via <strong style="color:#fff">Chart.js</strong>.</p></div>
+      <div class="card"><span class="card-icon">🌐</span><h3>Hospedagem</h3><p>Publicado no <strong style="color:#fff">Vercel</strong> — acesso online de qualquer dispositivo, a qualquer momento, sem instalação.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- S3 PROVA -->
+<div class="slide bg-dark">
+  <div class="slide-num">03 / 11</div>
+  <div class="full">
+    <span class="eyebrow">Conteúdo</span>
+    <h2>Prova Coberta pelo Sistema</h2>
+    <div class="line"></div>
+
+    <!-- Cabeçalho UERJ -->
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <span style="font-size:32px">🎓</span>
+      <div>
+        <h3 style="font-size:19px">UERJ — Universidade do Estado do Rio de Janeiro</h3>
+        <span style="font-size:12px;color:rgba(255,255,255,.45)">7 simulados realizados · 2026 · 60 questões por simulado</span>
+      </div>
+    </div>
+
+    <!-- Grade de disciplinas -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px">
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(29,201,158,.25);border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#fff;font-weight:700">Português</span><span style="font-size:14px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">8q</span></div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(29,201,158,.25);border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#fff;font-weight:700">Literatura</span><span style="font-size:14px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">8q</span></div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(29,201,158,.25);border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#fff;font-weight:700">Língua Estrangeira</span><span style="font-size:14px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">5q</span></div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(29,201,158,.25);border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#fff;font-weight:700">Matemática</span><span style="font-size:14px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">8q</span></div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(29,201,158,.25);border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#fff;font-weight:700">Física</span><span style="font-size:14px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">5q</span></div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(29,201,158,.25);border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#fff;font-weight:700">Química</span><span style="font-size:14px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">7q</span></div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(29,201,158,.25);border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#fff;font-weight:700">Biologia</span><span style="font-size:14px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">5q</span></div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(29,201,158,.25);border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#fff;font-weight:700">Geografia</span><span style="font-size:14px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">7q</span></div>
+      <div style="background:rgba(255,255,255,.05);border:1px solid rgba(29,201,158,.25);border-radius:11px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:#fff;font-weight:700">História</span><span style="font-size:14px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">7q</span></div>
+    </div>
+
+    <!-- Total + Meta + Conceitos -->
+    <div style="display:grid;grid-template-columns:auto auto 1fr;gap:16px;align-items:center">
+      <div style="background:rgba(29,201,158,.08);border:1.5px solid rgba(29,201,158,.3);border-radius:12px;padding:12px 22px;text-align:center">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.45);margin-bottom:4px">Total</div>
+        <div style="font-size:26px;font-weight:900;color:#fff">60 questões</div>
+      </div>
+      <div style="background:rgba(29,201,158,.12);border:1.5px solid rgba(29,201,158,.5);border-radius:12px;padding:12px 22px;text-align:center">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.45);margin-bottom:4px">Meta — Nota A</div>
+        <div style="font-size:26px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">43 acertos</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:2px">≥ 71,7% de aproveitamento</div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center">
+        <div style="background:#d1fae5;border-radius:10px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:900;color:#065f46">A</div><div style="font-size:10px;font-weight:700;color:#065f46">≥ 43 acertos</div></div>
+        <div style="background:#dbeafe;border-radius:10px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:900;color:#1e40af">B</div><div style="font-size:10px;font-weight:700;color:#1e40af">Bom</div></div>
+        <div style="background:#fef9c3;border-radius:10px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:900;color:#713f12">C</div><div style="font-size:10px;font-weight:700;color:#713f12">Regular</div></div>
+        <div style="background:#fee2e2;border-radius:10px;padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:900;color:#991b1b">D</div><div style="font-size:10px;font-weight:700;color:#991b1b">Reforço urgente</div></div>
+      </div>
+    </div>
+
+    <!-- Datas dos simulados -->
+    <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+      <span class="pill">📅 S1 — 25/02</span>
+      <span class="pill">📅 S2 — 04/03</span>
+      <span class="pill">📅 S3 — 11/04</span>
+      <span class="pill">📅 S4 — 06/05</span>
+      <span class="pill">📅 S5 — 13/05</span>
+      <span class="pill">📅 S6 — 20/05</span>
+      <span class="pill">📅 S7 — 27/05</span>
+    </div>
+  </div>
+</div>
+
+<!-- S4 RANKING -->
+<div class="slide bg-dark">
+  <div class="slide-num">04 / 11</div>
+  <div class="full">
+    <span class="eyebrow">Funcionalidade</span>
+    <h2>Ranking Geral</h2>
+    <div class="line"></div>
+    <div class="g2" style="align-items:start">
+      <div>
+        <ul class="flist" style="margin-bottom:20px">
+          <li><strong>Conceito A primeiro,</strong> ordenados por pontuação total decrescente</li>
+          <li><strong>Top 3</strong> com medalhas 🥇🥈🥉 e destaque visual dourado</li>
+          <li><strong>Avatar com iniciais</strong> colorido para identificação rápida</li>
+          <li><strong>Barra de progresso</strong> visual na coluna de pontuação total</li>
+          <li><strong>Busca por nome</strong> em tempo real com filtro instantâneo</li>
+        </ul>
+        <p style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Filtros disponíveis</p>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span class="pill">🏆 Todos</span>
+          <span class="pill">✅ Conceito A</span>
+          <span class="pill">📊 Conceito B</span>
+          <span class="pill">📋 Conceito C</span>
+          <span class="pill">❌ Conceito D</span>
+        </div>
+      </div>
+      <div class="box" style="overflow:hidden">
+        <table class="mtable">
+          <thead><tr><th>Pos.</th><th>Aluno</th><th>Total</th><th>Conceito</th></tr></thead>
+          <tbody>
+            <tr><td>🥇</td><td>V. Pereira</td><td><strong>50</strong></td><td style="color:#10b981;font-weight:800">✓ A</td></tr>
+            <tr><td>🥇</td><td>J. Chaves</td><td><strong>50</strong></td><td style="color:#10b981;font-weight:800">✓ A</td></tr>
+            <tr><td>🥉</td><td>M. Garcia</td><td><strong>47</strong></td><td style="color:#10b981;font-weight:800">✓ A</td></tr>
+            <tr><td>4</td><td>F. Arruda</td><td>46</td><td style="color:#10b981">✓ A</td></tr>
+            <tr><td>5</td><td>L. Santos</td><td>38</td><td style="color:#ef4444">✗ B</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S5 DASHBOARD INDIVIDUAL -->
+<div class="slide bg-dark">
+  <div class="slide-num">05 / 11</div>
+  <div class="full">
+    <span class="eyebrow">Funcionalidade</span>
+    <h2>Dashboard Individual do Aluno</h2>
+    <div class="line"></div>
+    <div class="g3" style="gap:16px">
+      <div class="card"><span class="card-icon">📊</span><h3>Desempenho</h3><p>Notas por disciplina com percentual de acerto, IC e comparação com a média da turma.</p></div>
+      <div class="card"><span class="card-icon">🕸️</span><h3>Radar vs Turma</h3><p>Gráfico radar comparando o aluno com a média nas 9 disciplinas simultaneamente.</p></div>
+      <div class="card"><span class="card-icon">🎯</span><h3>Meta &amp; Progresso</h3><p>Distância da meta de <strong style="color:#fff">43 acertos (Nota A)</strong> com barra percentual e acertos faltantes.</p></div>
+      <div class="card"><span class="card-icon">📈</span><h3>Evolução</h3><p>Gráfico de linha com a progressão nos 7 simulados vs média da turma e tendência automática.</p></div>
+      <div class="card"><span class="card-icon">📅</span><h3>Plano de Estudos</h3><p>Cronograma semanal personalizado de 6 dias · 6h/dia gerado pelas fraquezas do aluno.</p></div>
+      <div class="card"><span class="card-icon">🏅</span><h3>Classificações</h3><p>Histórico de posição em todos os simulados com deltas (↑ subiu · ↓ caiu · → estável).</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 IC -->
+<div class="slide bg-dark">
+  <div class="slide-num">06 / 11</div>
+  <div class="full">
+    <span class="eyebrow">Análise</span>
+    <h2>Índice de Consistência (IC)</h2>
+    <div class="line"></div>
+    <div class="g3" style="gap:18px;margin-bottom:20px">
+      <div class="card" style="border-color:rgba(16,185,129,.4);text-align:center">
+        <h3 style="color:#10b981;font-size:18px;margin-bottom:8px">IC ALTO</h3>
+        <div style="font-size:40px;margin-bottom:8px">🟢</div>
+        <p style="text-align:left">Aluno domina a disciplina. <strong style="color:#fff">Aproveitamento ≥ 80%</strong> — mantém esse nível nos simulados com baixa variação.</p>
+      </div>
+      <div class="card" style="border-color:rgba(245,158,11,.4);text-align:center">
+        <h3 style="color:#f59e0b;font-size:18px;margin-bottom:8px">IC MÉDIO</h3>
+        <div style="font-size:40px;margin-bottom:8px">🟡</div>
+        <p style="text-align:left">Desempenho razoável com <strong style="color:#fff">oscilações moderadas</strong> — potencial de melhora com foco no conteúdo.</p>
+      </div>
+      <div class="card" style="border-color:rgba(239,68,68,.4);text-align:center">
+        <h3 style="color:#ef4444;font-size:18px;margin-bottom:8px">IC BAIXO</h3>
+        <div style="font-size:40px;margin-bottom:8px">🔴</div>
+        <p style="text-align:left">Disciplina prioritária no plano de estudos. <strong style="color:#fff">Abaixo do mínimo</strong> ou grande variação entre simulados.</p>
+      </div>
+    </div>
+    <div class="box" style="text-align:center;padding:16px">
+      <p style="font-size:13px;color:rgba(255,255,255,.5)">O IC é calculado combinando o <strong style="color:#fff">percentual de acertos</strong> com a <strong style="color:#fff">regularidade</strong> entre os simulados — disciplinas com IC Baixo recebem maior peso no Plano de Estudos</p>
+    </div>
+  </div>
+</div>
+
+<!-- S7 META & PROGRESSO -->
+<div class="slide bg-dark">
+  <div class="slide-num">07 / 11</div>
+  <div class="full">
+    <span class="eyebrow">Funcionalidade</span>
+    <h2>Meta &amp; Progresso</h2>
+    <div class="line"></div>
+    <div class="g2" style="gap:28px">
+      <div>
+        <div class="card uerj" style="margin-bottom:18px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="font-size:24px">🎓</span><h3 style="font-size:18px">UERJ — Nota A</h3></div>
+          <p style="margin-bottom:10px">Total de questões: <strong style="color:#fff">60 por simulado</strong></p>
+          <p style="margin-bottom:10px">Meta mínima: <strong style="color:var(--teal);font-size:18px">43 acertos</strong></p>
+          <div class="prog"><div class="prog-fill" style="width:72%"></div></div>
+          <p style="font-size:11px;color:rgba(255,255,255,.35);margin-top:6px">43 / 60 = 71,7% de aproveitamento</p>
+        </div>
+        <div class="card" style="border-color:rgba(132,212,60,.3)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:20px">📊</span><h3>Como é exibido</h3></div>
+          <ul class="flist">
+            <li>Percentual de progresso em relação à meta de 43</li>
+            <li>Número de <strong>acertos faltantes</strong> para atingir Nota A</li>
+            <li>Narrativa automática de motivação personalizada</li>
+          </ul>
+        </div>
+      </div>
+      <div class="box" style="text-align:center;padding:32px 24px">
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);margin-bottom:12px">Exibição no Dashboard</p>
+        <div style="font-size:72px;font-weight:900;color:#10b981;line-height:1">78%</div>
+        <p style="font-size:14px;color:rgba(255,255,255,.5);margin:10px 0">⭐ Muito próximo da meta!</p>
+        <div class="prog" style="max-width:240px;margin:0 auto"><div class="prog-fill" style="width:78%"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px">
+          <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:10px"><div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:4px">ACERTOS</div><div style="font-size:22px;font-weight:900;color:#10b981">47 / 60</div></div>
+          <div style="background:rgba(255,255,255,.05);border-radius:10px;padding:10px"><div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:700;margin-bottom:4px">CONCEITO</div><div style="font-size:22px;font-weight:900;color:#10b981">A ✓</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S8 PLANO DE ESTUDOS -->
+<div class="slide bg-dark">
+  <div class="slide-num">08 / 11</div>
+  <div class="full">
+    <span class="eyebrow">Funcionalidade</span>
+    <h2>Plano de Estudos Personalizado</h2>
+    <div class="line"></div>
+    <div class="g2" style="align-items:start">
+      <ul class="flist">
+        <li><strong>6 dias por semana · 6 horas por dia</strong> = 36h semanais</li>
+        <li>Prioridade definida pelo <strong>IC de cada disciplina</strong></li>
+        <li><strong>Matemática sempre prioridade máxima</strong> — peso 1.5x no cálculo</li>
+        <li>Distribuição diária: 🔥 2.5h · 📘 2h · 📗 1.5h</li>
+        <li>Mínimo não atingido recebe <strong>penalidade de peso x1.3</strong></li>
+        <li>Tabela semanal <strong>gerada automaticamente</strong> cobrindo as 9 disciplinas</li>
+        <li>Cada aluno recebe um plano <strong>único</strong> baseado nos seus dados</li>
+      </ul>
+      <div>
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);margin-bottom:12px">Exemplo — Segunda-feira</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
+          <div style="background:#dcfce7;border:2px solid #86efac;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:800;color:#14532d">Matemática</div><div style="font-size:24px;font-weight:900;color:#16a34a">2.5h</div><div style="font-size:10px;color:#166534;opacity:.7">🔥 Prioridade 1</div></div>
+          <div style="background:#dbeafe;border:2px solid #93c5fd;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:800;color:#1e3a8a">Português</div><div style="font-size:24px;font-weight:900;color:#2563eb">2h</div><div style="font-size:10px;color:#1e40af;opacity:.7">📘 Prioridade 2</div></div>
+          <div style="background:#fef9c3;border:2px solid #fde047;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;font-weight:800;color:#713f12">Literatura</div><div style="font-size:24px;font-weight:900;color:#ca8a04">1.5h</div><div style="font-size:10px;color:#92400e;opacity:.7">📗 Prioridade 3</div></div>
+        </div>
+        <div class="box" style="text-align:center;padding:14px"><p style="font-size:12px;color:rgba(255,255,255,.4)">Total diário: <strong style="color:#fff">6h</strong> · Total semanal: <strong style="color:#fff">36h</strong> · Seg → Sáb</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S9 EVOLUÇÃO -->
+<div class="slide bg-dark">
+  <div class="slide-num">09 / 11</div>
+  <div class="full">
+    <span class="eyebrow">Funcionalidade</span>
+    <h2>Histórico de Evolução</h2>
+    <div class="line"></div>
+    <div class="g2" style="align-items:start">
+      <ul class="flist">
+        <li><strong>Gráfico de linha</strong> com pontuação em cada simulado realizado</li>
+        <li>Linha do aluno <strong>vs média da turma</strong> no mesmo gráfico</li>
+        <li>Tendência automática: 📈 Subindo · 📉 Caindo · ➡️ Estável</li>
+        <li>Tabela com <strong>delta de posição</strong> entre simulados (seta para cima/baixo)</li>
+        <li>Cobertura de <strong>todos os 7 simulados</strong> realizados em 2026</li>
+        <li>Visão consolidada <strong>por nome</strong> cruzando todas as listas</li>
+      </ul>
+      <div class="box">
+        <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);margin-bottom:16px">Evolução UERJ — Exemplo</p>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:6px;align-items:center;text-align:center">
+          <div><div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:4px">S1</div><div style="font-size:28px;font-weight:900;color:#fff">38</div><div style="font-size:10px;color:var(--t3)">#24</div></div>
+          <div style="font-size:18px;font-weight:900;color:#10b981">↑+6</div>
+          <div><div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:4px">S2</div><div style="font-size:28px;font-weight:900;color:#fff">44</div><div style="font-size:10px;color:var(--t3)">#11</div></div>
+          <div style="font-size:18px;font-weight:900;color:#10b981">↑+2</div>
+          <div><div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:4px">S3</div><div style="font-size:28px;font-weight:900;color:#fff">46</div><div style="font-size:10px;color:var(--t3)">#8</div></div>
+          <div style="font-size:18px;font-weight:900;color:#ef4444">↓-1</div>
+          <div><div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:4px">S4</div><div style="font-size:28px;font-weight:900;color:#fff">45</div><div style="font-size:10px;color:var(--t3)">#9</div></div>
+        </div>
+        <div style="margin-top:16px;text-align:center"><span style="background:#dcfce7;color:#14532d;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:800">📈 Tendência de Alta</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S10 NÚMEROS -->
+<div class="slide bg-dark">
+  <div class="slide-num">10 / 11</div>
+  <div class="full">
+    <span class="eyebrow">Números</span>
+    <h2>Dashboard UERJ em Dados</h2>
+    <div class="line"></div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-bottom:28px;max-width:1000px;margin-left:auto;margin-right:auto">
+      <div class="stat"><div class="stat-num">500+</div><div class="stat-lbl">Alunos Acompanhados</div></div>
+      <div class="stat"><div class="stat-num">10</div><div class="stat-lbl">Unidades Acompanhadas</div></div>
+      <div class="stat"><div class="stat-num">7</div><div class="stat-lbl">Simulados no Sistema</div></div>
+      <div class="stat"><div class="stat-num">60</div><div class="stat-lbl">Questões por Simulado</div></div>
+      <div class="stat"><div class="stat-num">9</div><div class="stat-lbl">Disciplinas Analisadas</div></div>
+    </div>
+    <div style="text-align:center;max-width:800px">
+      <span class="pill">⚡ Hospedado no Vercel</span>
+      <span class="pill">🖨️ Relatório imprimível por aluno</span>
+      <span class="pill">📊 Gráficos com Chart.js</span>
+      <span class="pill">🎨 Design responsivo</span>
+      <span class="pill">🔍 Busca em tempo real</span>
+      <span class="pill">📅 Plano de estudos automático</span>
+    </div>
+    <div style="margin-top:24px;width:100%;display:flex;justify-content:center">
+      <div class="highlight" style="max-width:600px;width:100%">
+        <h3>43 acertos de 60 = Nota A</h3>
+        <p>Meta monitorada em tempo real para cada aluno, em cada simulado</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S11 ENCERRAMENTO -->
+<div class="slide bg-cover">
+  <div class="dots"></div>
+  <div class="slide-num">11 / 11</div>
+  <div style="text-align:center;max-width:700px;position:relative">
+    <img src="logo.jpg" class="logo" alt="Matriz Educação">
+    <div class="highlight" style="margin-bottom:28px">
+      <h3>Dashboard UERJ 2026</h3>
+      <p>Desenvolvido por <strong>Davi Ferrarez</strong> · exclusivamente para o Matriz Educação</p>
+    </div>
+    <div style="margin-bottom:20px">
+      <span class="pill">🎓 UERJ — 7 Simulados</span>
+      <span class="pill">👥 500+ Alunos</span>
+      <span class="pill">🏫 10 Unidades</span>
+      <span class="pill">📊 9 Disciplinas</span>
+    </div>
+    <p class="sub" style="font-size:14px;margin-bottom:20px">Ranking · Dashboard Individual · IC · Meta &amp; Progresso · Plano de Estudos · Histórico de Evolução</p>
+    <div style="display:flex;gap:28px;justify-content:center">
+      <div style="text-align:center"><div style="font-size:28px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">7</div><div style="font-size:11px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:4px">Simulados</div></div>
+      <div style="width:1px;background:rgba(255,255,255,.1)"></div>
+      <div style="text-align:center"><div style="font-size:28px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">9</div><div style="font-size:11px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:4px">Disciplinas</div></div>
+      <div style="width:1px;background:rgba(255,255,255,.1)"></div>
+      <div style="text-align:center"><div style="font-size:28px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">60</div><div style="font-size:11px;color:rgba(255,255,255,.4);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:4px">Questões / Sim</div></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="navbar">
+  <button class="nbtn" onclick="go(-1)">&#8592;</button>
+  <div class="dotnav" id="dots"></div>
+  <span class="counter" id="ctr">1 / 11</span>
+  <button class="nbtn" onclick="go(1)">&#8594;</button>
+</div>
+<script>
+const slides=document.querySelectorAll('.slide');
+const dotsEl=document.getElementById('dots');
+const ctr=document.getElementById('ctr');
+let cur=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d);});
+function goTo(n){slides[cur].classList.remove('active');slides[cur].classList.add('out');const p=cur;cur=n;setTimeout(()=>slides[p].classList.remove('out'),460);slides[cur].classList.add('active');document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));ctr.textContent=`${cur+1} / ${slides.length}`;}
+function go(dir){const n=Math.max(0,Math.min(slides.length-1,cur+dir));if(n!==cur)goTo(n);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ')go(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(-1);if(e.key==='Home')goTo(0);if(e.key==='End')goTo(slides.length-1);});
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);});
+</script>
+</body>
+</html>
